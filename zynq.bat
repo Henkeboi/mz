@@ -9,7 +9,7 @@ goto eof
 :vivado
 mkdir vivado
 cd vivado
-vivado -source ../scripts/init_vivado.tcl
+vivado -source ../scripts/ams.tcl
 goto eof
 
 :eof
