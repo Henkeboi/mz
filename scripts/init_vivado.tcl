@@ -1,5 +1,5 @@
 # Create empty Vivado project with correct part:
-create_project ZynqExample ../vivado -part xc7z010clg225-2
+create_project ams ../vivado -part xc7z010clg400-1
 set_property target_language VHDL [current_project]
 
 # Add block design:
