@@ -4,14 +4,14 @@
 --Date        : Fri Oct 30 19:46:41 2020
 --Host        : DESKTOP-KK7SPE7 running 64-bit major release  (build 9200)
 --Command     : generate_target spi_pl_wrapper.bd
---Design      : spi_pl_wrapper
+--Design      : ams_wrapper
 --Purpose     : IP block netlist
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity spi_pl_wrapper is
+entity ams_wrapper is
   port (
     CAN_0_rx : in STD_LOGIC;
     CAN_0_tx : out STD_LOGIC;
@@ -63,10 +63,10 @@ entity spi_pl_wrapper is
     ss_o_1 : out STD_LOGIC_VECTOR ( 0 to 0 );
     ss_o_2 : out STD_LOGIC_VECTOR ( 0 to 0 )
   );
-end spi_pl_wrapper;
+end ams_wrapper;
 
-architecture STRUCTURE of spi_pl_wrapper is
-  component spi_pl is
+architecture STRUCTURE of ams_wrapper is
+  component ams is
   port (
     sck_o : out STD_LOGIC;
     ss_o : out STD_LOGIC_VECTOR ( 0 to 0 );
@@ -126,7 +126,7 @@ architecture STRUCTURE of spi_pl_wrapper is
     CAN_1_tx : out STD_LOGIC;
     CAN_1_rx : in STD_LOGIC
   );
-  end component spi_pl;
+  end component ams;
   component IOBUF is
   port (
     I : in STD_LOGIC;
@@ -176,7 +176,7 @@ SPI_0_ss_iobuf: component IOBUF
       O => SPI_0_ss_i,
       T => SPI_0_ss_t
     );
-spi_pl_i: component spi_pl
+spi_pl_i: component ams
      port map (
       CAN_0_rx => CAN_0_rx,
       CAN_0_tx => CAN_0_tx,
