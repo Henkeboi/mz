@@ -1,7 +1,7 @@
 --Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
---Date        : Fri Oct 30 19:46:41 2020
+--Date        : Tue Nov 17 20:02:59 2020
 --Host        : DESKTOP-KK7SPE7 running 64-bit major release  (build 9200)
 --Command     : generate_target spi_pl_wrapper.bd
 --Design      : spi_pl_wrapper
@@ -13,10 +13,6 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity spi_pl_wrapper is
   port (
-    CAN_0_rx : in STD_LOGIC;
-    CAN_0_tx : out STD_LOGIC;
-    CAN_1_rx : in STD_LOGIC;
-    CAN_1_tx : out STD_LOGIC;
     DDR_addr : inout STD_LOGIC_VECTOR ( 14 downto 0 );
     DDR_ba : inout STD_LOGIC_VECTOR ( 2 downto 0 );
     DDR_cas_n : inout STD_LOGIC;
@@ -38,18 +34,20 @@ entity spi_pl_wrapper is
     FIXED_IO_ps_clk : inout STD_LOGIC;
     FIXED_IO_ps_porb : inout STD_LOGIC;
     FIXED_IO_ps_srstb : inout STD_LOGIC;
+    SPI0_MISO_I : in STD_LOGIC;
+    SPI0_MOSI_O : out STD_LOGIC;
+    SPI0_SCLK_O : out STD_LOGIC;
+    SPI0_SS_O : out STD_LOGIC;
     SPI1_MISO_I : in STD_LOGIC;
     SPI1_MOSI_O : out STD_LOGIC;
     SPI1_SCLK_O : out STD_LOGIC;
     SPI1_SS_O : out STD_LOGIC;
-    SPI_0_io0_io : inout STD_LOGIC;
-    SPI_0_io1_io : inout STD_LOGIC;
-    SPI_0_sck_io : inout STD_LOGIC;
-    SPI_0_ss1_o : out STD_LOGIC;
-    SPI_0_ss2_o : out STD_LOGIC;
-    SPI_0_ss_io : inout STD_LOGIC;
-    can_phy_rx : in STD_LOGIC;
-    can_phy_tx : out STD_LOGIC;
+    can_phy_rx_0 : in STD_LOGIC;
+    can_phy_rx_1 : in STD_LOGIC;
+    can_phy_rx_2 : in STD_LOGIC;
+    can_phy_tx_0 : out STD_LOGIC;
+    can_phy_tx_1 : out STD_LOGIC;
+    can_phy_tx_2 : out STD_LOGIC;
     io0_i : in STD_LOGIC;
     io0_i_1 : in STD_LOGIC;
     io0_i_2 : in STD_LOGIC;
@@ -81,17 +79,15 @@ architecture STRUCTURE of spi_pl_wrapper is
     SPI1_MISO_I : in STD_LOGIC;
     SPI1_SS_O : out STD_LOGIC;
     io0_i_2 : in STD_LOGIC;
-    ss_o_2 : out STD_LOGIC_VECTOR ( 0 to 0 );
     io0_o_2 : out STD_LOGIC;
     sck_o_2 : out STD_LOGIC;
-    can_phy_rx : in STD_LOGIC;
-    can_phy_tx : out STD_LOGIC;
-    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
-    FIXED_IO_ddr_vrn : inout STD_LOGIC;
-    FIXED_IO_ddr_vrp : inout STD_LOGIC;
-    FIXED_IO_ps_srstb : inout STD_LOGIC;
-    FIXED_IO_ps_clk : inout STD_LOGIC;
-    FIXED_IO_ps_porb : inout STD_LOGIC;
+    can_phy_rx_0 : in STD_LOGIC;
+    can_phy_tx_0 : out STD_LOGIC;
+    can_phy_tx_1 : out STD_LOGIC;
+    can_phy_rx_1 : in STD_LOGIC;
+    can_phy_rx_2 : in STD_LOGIC;
+    can_phy_tx_2 : out STD_LOGIC;
+    ss_o_2 : out STD_LOGIC_VECTOR ( 0 to 0 );
     DDR_cas_n : inout STD_LOGIC;
     DDR_cke : inout STD_LOGIC;
     DDR_ck_n : inout STD_LOGIC;
@@ -107,81 +103,21 @@ architecture STRUCTURE of spi_pl_wrapper is
     DDR_dq : inout STD_LOGIC_VECTOR ( 31 downto 0 );
     DDR_dqs_n : inout STD_LOGIC_VECTOR ( 3 downto 0 );
     DDR_dqs_p : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    SPI_0_sck_i : in STD_LOGIC;
-    SPI_0_sck_o : out STD_LOGIC;
-    SPI_0_sck_t : out STD_LOGIC;
-    SPI_0_io0_i : in STD_LOGIC;
-    SPI_0_io0_o : out STD_LOGIC;
-    SPI_0_io0_t : out STD_LOGIC;
-    SPI_0_io1_i : in STD_LOGIC;
-    SPI_0_io1_o : out STD_LOGIC;
-    SPI_0_io1_t : out STD_LOGIC;
-    SPI_0_ss_i : in STD_LOGIC;
-    SPI_0_ss_o : out STD_LOGIC;
-    SPI_0_ss1_o : out STD_LOGIC;
-    SPI_0_ss2_o : out STD_LOGIC;
-    SPI_0_ss_t : out STD_LOGIC;
-    CAN_0_tx : out STD_LOGIC;
-    CAN_0_rx : in STD_LOGIC;
-    CAN_1_tx : out STD_LOGIC;
-    CAN_1_rx : in STD_LOGIC
+    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
+    FIXED_IO_ddr_vrn : inout STD_LOGIC;
+    FIXED_IO_ddr_vrp : inout STD_LOGIC;
+    FIXED_IO_ps_srstb : inout STD_LOGIC;
+    FIXED_IO_ps_clk : inout STD_LOGIC;
+    FIXED_IO_ps_porb : inout STD_LOGIC;
+    SPI0_SCLK_O : out STD_LOGIC;
+    SPI0_MOSI_O : out STD_LOGIC;
+    SPI0_MISO_I : in STD_LOGIC;
+    SPI0_SS_O : out STD_LOGIC
   );
   end component spi_pl;
-  component IOBUF is
-  port (
-    I : in STD_LOGIC;
-    O : out STD_LOGIC;
-    T : in STD_LOGIC;
-    IO : inout STD_LOGIC
-  );
-  end component IOBUF;
-  signal SPI_0_io0_i : STD_LOGIC;
-  signal SPI_0_io0_o : STD_LOGIC;
-  signal SPI_0_io0_t : STD_LOGIC;
-  signal SPI_0_io1_i : STD_LOGIC;
-  signal SPI_0_io1_o : STD_LOGIC;
-  signal SPI_0_io1_t : STD_LOGIC;
-  signal SPI_0_sck_i : STD_LOGIC;
-  signal SPI_0_sck_o : STD_LOGIC;
-  signal SPI_0_sck_t : STD_LOGIC;
-  signal SPI_0_ss_i : STD_LOGIC;
-  signal SPI_0_ss_o : STD_LOGIC;
-  signal SPI_0_ss_t : STD_LOGIC;
 begin
-SPI_0_io0_iobuf: component IOBUF
-     port map (
-      I => SPI_0_io0_o,
-      IO => SPI_0_io0_io,
-      O => SPI_0_io0_i,
-      T => SPI_0_io0_t
-    );
-SPI_0_io1_iobuf: component IOBUF
-     port map (
-      I => SPI_0_io1_o,
-      IO => SPI_0_io1_io,
-      O => SPI_0_io1_i,
-      T => SPI_0_io1_t
-    );
-SPI_0_sck_iobuf: component IOBUF
-     port map (
-      I => SPI_0_sck_o,
-      IO => SPI_0_sck_io,
-      O => SPI_0_sck_i,
-      T => SPI_0_sck_t
-    );
-SPI_0_ss_iobuf: component IOBUF
-     port map (
-      I => SPI_0_ss_o,
-      IO => SPI_0_ss_io,
-      O => SPI_0_ss_i,
-      T => SPI_0_ss_t
-    );
 spi_pl_i: component spi_pl
      port map (
-      CAN_0_rx => CAN_0_rx,
-      CAN_0_tx => CAN_0_tx,
-      CAN_1_rx => CAN_1_rx,
-      CAN_1_tx => CAN_1_tx,
       DDR_addr(14 downto 0) => DDR_addr(14 downto 0),
       DDR_ba(2 downto 0) => DDR_ba(2 downto 0),
       DDR_cas_n => DDR_cas_n,
@@ -203,26 +139,20 @@ spi_pl_i: component spi_pl
       FIXED_IO_ps_clk => FIXED_IO_ps_clk,
       FIXED_IO_ps_porb => FIXED_IO_ps_porb,
       FIXED_IO_ps_srstb => FIXED_IO_ps_srstb,
+      SPI0_MISO_I => SPI0_MISO_I,
+      SPI0_MOSI_O => SPI0_MOSI_O,
+      SPI0_SCLK_O => SPI0_SCLK_O,
+      SPI0_SS_O => SPI0_SS_O,
       SPI1_MISO_I => SPI1_MISO_I,
       SPI1_MOSI_O => SPI1_MOSI_O,
       SPI1_SCLK_O => SPI1_SCLK_O,
       SPI1_SS_O => SPI1_SS_O,
-      SPI_0_io0_i => SPI_0_io0_i,
-      SPI_0_io0_o => SPI_0_io0_o,
-      SPI_0_io0_t => SPI_0_io0_t,
-      SPI_0_io1_i => SPI_0_io1_i,
-      SPI_0_io1_o => SPI_0_io1_o,
-      SPI_0_io1_t => SPI_0_io1_t,
-      SPI_0_sck_i => SPI_0_sck_i,
-      SPI_0_sck_o => SPI_0_sck_o,
-      SPI_0_sck_t => SPI_0_sck_t,
-      SPI_0_ss1_o => SPI_0_ss1_o,
-      SPI_0_ss2_o => SPI_0_ss2_o,
-      SPI_0_ss_i => SPI_0_ss_i,
-      SPI_0_ss_o => SPI_0_ss_o,
-      SPI_0_ss_t => SPI_0_ss_t,
-      can_phy_rx => can_phy_rx,
-      can_phy_tx => can_phy_tx,
+      can_phy_rx_0 => can_phy_rx_0,
+      can_phy_rx_1 => can_phy_rx_1,
+      can_phy_rx_2 => can_phy_rx_2,
+      can_phy_tx_0 => can_phy_tx_0,
+      can_phy_tx_1 => can_phy_tx_1,
+      can_phy_tx_2 => can_phy_tx_2,
       io0_i => io0_i,
       io0_i_1 => io0_i_1,
       io0_i_2 => io0_i_2,
